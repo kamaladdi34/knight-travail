@@ -25,15 +25,6 @@ function setPossibleMoves(move) {
     board[possibleMoves[i].x][possibleMoves[i].y] = "X";
   }
 }
-function printBoard() {
-  for (let i = 0; i < board.length; i++) {
-    let row = "";
-    for (let j = 0; j < board[i].length; j++) {
-      row += `[ ${board[i][j]} ]`;
-    }
-    console.log(row);
-  }
-}
 function positionsAreSame(position, targetPosition) {
   return position.x == targetPosition.x && position.y == targetPosition.y;
 }
@@ -46,7 +37,7 @@ function findClosestPath(position, target) {
       moves.push(result);
     }
   }
-  console.log(moves);
+  return moves;
 }
 function arrayIncludesMove(move, array) {
   let isIncluded = false;
@@ -76,6 +67,6 @@ function findPath(position, target, depth = 0, moves = []) {
     }
   }
 }
-let start = { x: 0, y: 0 };
-let target = { x: 2, y: 4 };
+let start = { x: 3, y: 3 };
+let target = { x: 5, y: 5 };
 findClosestPath(start, target);
