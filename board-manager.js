@@ -2,8 +2,11 @@ import { possibleMovesFromPosition } from "./kt-helper.js";
 import { findClosestPath } from "./kt-recursion.js";
 const board = get2dBoard(document.querySelectorAll(".board .cell"));
 const knight = document.createElement("div");
-knight.classList.add("knight");
 let paintedCells = [];
+setKnightPosition(board[0][0]);
+let lastPosition = { x: 0, y: 0 };
+paintCells(possibleMovesFromPosition(lastPosition));
+knight.classList.add("knight");
 function setCoordinatesOnCells(board) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
@@ -13,14 +16,15 @@ function setCoordinatesOnCells(board) {
   }
 }
 setCoordinatesOnCells(board);
-//document.addEventListener("mouseover", (event) => handleMouseOverEvent(event));
+document.addEventListener("mouseover", (event) => handleMouseOverEvent(event));
 document.addEventListener("click", (event) => handlClickEvent(event));
 function handlClickEvent(event) {
   if (event.target.classList.contains("cell")) {
     let xPosition = +event.target.getAttribute("data-x");
     let yPosition = +event.target.getAttribute("data-y");
-    let moves = findClosestPath({ x: 0, y: 0 }, { x: xPosition, y: yPosition });
+    let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
     displayMoves(moves);
+    lastPosition = { x: xPosition, y: yPosition };
   }
 }
 function handleMouseOverEvent(event) {
@@ -64,7 +68,6 @@ function displayMoves(moves) {
   for (let i = 0; i < moves.length; i++) {
     setTimeout(() => {
       board[moves[i].y][moves[i].x].append(knight);
-      paintCells(possibleMovesFromPosition({ x: moves[i].x, y: moves[i].y }));
-    }, i * 1000);
+    }, i * 100);
   }
 }

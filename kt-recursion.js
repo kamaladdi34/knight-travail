@@ -17,22 +17,29 @@ export function findClosestPath(position, target) {
   console.log(moves);
   return moves[0];
 }
-function findPath(position, target, depth = 0, moves = []) {
+function findPath(position, target, depth = 1, moves = [], shortest = null) {
   moves.push(position);
   if (positionsAreSame(position, target)) {
     return moves;
-  } else if (depth > 20) {
+  } else if (depth > 9) {
+    return undefined;
+  } else if (shortest != null && depth > shortest.length) {
     return undefined;
   }
   let possibleMoves = possibleMovesFromPosition(position);
+  let shortestPath = null;
   for (let i = 0; i < possibleMoves.length; i++) {
     if (arrayIncludesMove(possibleMoves[i], moves)) {
       continue;
     }
     let d = depth;
-    let result = findPath(possibleMoves[i], target, ++d, [...moves]);
+    let result = findPath(possibleMoves[i], target, ++d, [...moves], shortest);
     if (result != undefined) {
-      return result;
+      if (shortestPath == null || result.length < shortestPath.length) {
+        shortestPath = result;
+        shortest = result;
+      }
     }
   }
+  return shortestPath;
 }
