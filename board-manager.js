@@ -1,6 +1,6 @@
 import { possibleMovesFromPosition } from "./kt-helper.js";
 import { findClosestPath } from "./kt-recursion.js";
-import { getPath } from "./kt-tree.js";
+import { getPath } from "./kt-tree-DFS.js";
 const board = get2dBoard(document.querySelectorAll(".board .cell"));
 const knight = document.createElement("div");
 let paintedCells = [];
