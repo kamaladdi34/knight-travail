@@ -14,7 +14,6 @@ export function findClosestPath(position, target) {
   moves.sort((a, b) => {
     return a.length - b.length;
   });
-  console.log(moves);
   return moves[0];
 }
 function findPath(position, target, depth = 1, moves = [], shortest = null) {
