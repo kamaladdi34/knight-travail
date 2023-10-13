@@ -41,53 +41,41 @@ function findClosestPath(position, target) {
   let possibleMoves = possibleMovesFromPosition(position);
   let moves = [];
   for (let i = 0; i < possibleMoves.length; i++) {
-    let result = findPath(possibleMoves[i], target, position);
+    let result = findPath(possibleMoves[i], target);
     if (result != undefined) {
       moves.push(result);
     }
   }
   console.log(moves);
 }
-function findPath(
-  position,
-  target,
-  lastSecond,
-  depth = 1,
-  moves = [],
-  step = 1
-) {
-  console.log(position, lastSecond, step);
-  if (step == 2) {
-    step = 0;
-    if (positionsAreSame(position, lastSecond)) {
-      console.log("position already visited");
-      return;
+function arrayIncludesMove(move, array) {
+  let isIncluded = false;
+  for (let i = 0; i < array.length; i++) {
+    if (positionsAreSame(move, array[i])) {
+      isIncluded = true;
     }
-    lastSecond = position;
   }
+  return isIncluded;
+}
+function findPath(position, target, depth = 0, moves = []) {
   moves.push(position);
   if (positionsAreSame(position, target)) {
     return moves;
-  } else if (depth > 10) {
+  } else if (depth > 20) {
     return undefined;
   }
   let possibleMoves = possibleMovesFromPosition(position);
   for (let i = 0; i < possibleMoves.length; i++) {
+    if (arrayIncludesMove(possibleMoves[i], moves)) {
+      continue;
+    }
     let d = depth;
-    let s = step;
-    let result = findPath(
-      possibleMoves[i],
-      target,
-      lastSecond,
-      ++d,
-      [...moves],
-      ++s
-    );
+    let result = findPath(possibleMoves[i], target, ++d, [...moves]);
     if (result != undefined) {
       return result;
     }
   }
 }
 let start = { x: 0, y: 0 };
-let target = { x: 4, y: 4 };
-console.log(findClosestPath(start, target));
+let target = { x: 2, y: 4 };
+findClosestPath(start, target);
