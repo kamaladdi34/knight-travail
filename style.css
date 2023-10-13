@@ -19,13 +19,13 @@ body {
   grid-template-rows: repeat(8, 1fr);
 }
 .cell {
-  background-color: rgb(255, 255, 255);
-  transition: 0.5s;
+  background-color: #f2e1c3;
 }
 .cell.tinted {
-  background-color: black;
+  background-color: #c3a082;
 }
 .cell.green,
 .cell.tinted.green {
+  border: 5px solid rgb(0, 255, 0);
   background-color: green;
 }
