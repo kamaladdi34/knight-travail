@@ -1,5 +1,6 @@
 import { possibleMovesFromPosition } from "./kt-helper.js";
 import { findClosestPath } from "./kt-recursion.js";
+import { getPath } from "./kt-tree.js";
 const board = get2dBoard(document.querySelectorAll(".board .cell"));
 const knight = document.createElement("div");
 let paintedCells = [];
@@ -22,7 +23,8 @@ function handlClickEvent(event) {
   if (event.target.classList.contains("cell")) {
     let xPosition = +event.target.getAttribute("data-x");
     let yPosition = +event.target.getAttribute("data-y");
-    let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
+    //let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
+    let moves = getPath(lastPosition, { x: xPosition, y: yPosition });
     displayMoves(moves);
     lastPosition = { x: xPosition, y: yPosition };
   }
