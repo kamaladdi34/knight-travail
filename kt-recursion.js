@@ -2,7 +2,7 @@ import { arrayIncludesMove } from "./kt-helper.js";
 import { positionsAreSame } from "./kt-helper.js";
 import { possibleMovesFromPosition } from "./kt-helper.js";
 
-function findClosestPath(position, target) {
+export function findClosestPath(position, target) {
   let possibleMoves = possibleMovesFromPosition(position);
   let moves = [];
   for (let i = 0; i < possibleMoves.length; i++) {
@@ -11,7 +11,11 @@ function findClosestPath(position, target) {
       moves.push(result);
     }
   }
-  return moves;
+  moves.sort((a, b) => {
+    return a.length - b.length;
+  });
+  console.log(moves);
+  return moves[0];
 }
 function findPath(position, target, depth = 0, moves = []) {
   moves.push(position);
