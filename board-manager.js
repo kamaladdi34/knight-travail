@@ -70,6 +70,6 @@ function displayMoves(moves) {
   for (let i = 0; i < moves.length; i++) {
     setTimeout(() => {
       board[moves[i].y][moves[i].x].append(knight);
-    }, i * 100);
+    }, i * 200);
   }
 }
