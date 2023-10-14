@@ -25,7 +25,7 @@ class Map {
     newMove.childMoves = childMoves;
     return newMove;
   }
-  findPosition(move = this.root, position, moves = []) {
+  findPathDFS(move = this.root, position, moves = []) {
     if (move == undefined) {
       return undefined;
     }
@@ -38,7 +38,7 @@ class Map {
     }
     let paths = [];
     for (let i = 0; i < move.childMoves.length; i++) {
-      let result = this.findPosition(move.childMoves[i], position, [...moves]);
+      let result = this.findPathDFS(move.childMoves[i], position, [...moves]);
       if (result != undefined) {
         paths.push(result);
       }
@@ -46,9 +46,10 @@ class Map {
     paths.sort((a, b) => a.length - b.length);
     return paths[0];
   }
+  findPathBFS() {}
 }
 
 export function getPath(startPosition, targetPosition) {
   let map = new Map(startPosition, 20);
-  return map.findPosition(map.root, targetPosition);
+  return map.findPathDFS(map.root, targetPosition);
 }
