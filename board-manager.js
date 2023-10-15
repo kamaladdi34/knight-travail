@@ -24,9 +24,9 @@ function handlClickEvent(event) {
   if (event.target.classList.contains("cell")) {
     let xPosition = +event.target.getAttribute("data-x");
     let yPosition = +event.target.getAttribute("data-y");
-    let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
-    //let moves = getPath(lastPosition, { x: xPosition, y: yPosition });
-    //let moves = getBFSpath(lastPosition, { x: xPosition, y: yPosition });
+    // let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
+    // moves = getPath(lastPosition, { x: xPosition, y: yPosition });
+    let moves = getBFSpath(lastPosition, { x: xPosition, y: yPosition });
     displayMoves(moves);
     lastPosition = { x: xPosition, y: yPosition };
   }

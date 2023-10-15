@@ -49,7 +49,6 @@ class Map {
   }
   findPathBFS(targetMove) {
     let queue = [this.root];
-    let visitedMoves = [];
     while (queue.length > 0) {
       let level = [];
       for (let i = 0; i < queue.length; i++) {
@@ -63,12 +62,6 @@ class Map {
           if (!queue[i].childMoves[j]) {
             continue;
           }
-          if (
-            arrayIncludesMove(queue[i].childMoves[j].position, visitedMoves)
-          ) {
-            continue;
-          }
-          visitedMoves.push(queue[i].childMoves[j].position);
           level.push(queue[i].childMoves[j]);
         }
         queue.shift();
