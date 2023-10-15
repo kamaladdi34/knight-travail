@@ -2,9 +2,10 @@ import { positionsAreSame } from "./kt-helper.js";
 import { possibleMovesFromPosition } from "./kt-helper.js";
 import { arrayIncludesMove } from "./kt-helper.js";
 class Move {
-  constructor(position, childMoves) {
+  constructor(position, parent, childMoves) {
     this.position = position;
     this.childMoves = childMoves;
+    this.parent = parent;
   }
 }
 class Map {
@@ -12,15 +13,15 @@ class Map {
     this.maxDepth = maxDepth;
     this.root = this.createMap(position);
   }
-  createMap(move, depth = 0) {
+  createMap(move, depth = 0, parent = this.root) {
     if (depth > this.maxDepth) {
       return null;
     }
-    let newMove = new Move(move);
+    let newMove = new Move(move, parent);
     let possibleMoves = possibleMovesFromPosition(move);
     let childMoves = [];
     for (let i = 0; i < possibleMoves.length; i++) {
-      childMoves.push(this.createMap(possibleMoves[i], ++depth));
+      childMoves.push(this.createMap(possibleMoves[i], ++depth, newMove));
     }
     newMove.childMoves = childMoves;
     return newMove;
@@ -46,10 +47,49 @@ class Map {
     paths.sort((a, b) => a.length - b.length);
     return paths[0];
   }
-  findPathBFS() {}
+  findPathBFS(targetMove) {
+    let queue = [this.root];
+    let visitedMoves = [];
+    while (queue.length > 0) {
+      let level = [];
+      for (let i = 0; i < queue.length; i++) {
+        if (!queue[i]) {
+          continue;
+        }
+        if (positionsAreSame(queue[i].position, targetMove)) {
+          return queue[i];
+        }
+        for (let j = 0; j < queue[i].childMoves.length; j++) {
+          if (!queue[i].childMoves[j]) {
+            continue;
+          }
+          if (
+            arrayIncludesMove(queue[i].childMoves[j].position, visitedMoves)
+          ) {
+            continue;
+          }
+          visitedMoves.push(queue[i].childMoves[j].position);
+          level.push(queue[i].childMoves[j]);
+        }
+        queue.shift();
+      }
+      queue = queue.concat(level);
+    }
+  }
 }
 
 export function getPath(startPosition, targetPosition) {
   let map = new Map(startPosition, 20);
   return map.findPathDFS(map.root, targetPosition);
+}
+export function getBFSpath(startPosition, targetPosition) {
+  let map = new Map(startPosition, 20);
+  let move = map.findPathBFS(targetPosition);
+  let parent = move;
+  let moves = [];
+  while (parent) {
+    moves.push(parent.position);
+    parent = parent.parent;
+  }
+  return moves.reverse();
 }
