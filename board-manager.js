@@ -7,6 +7,7 @@ const knight = document.createElement("div");
 let paintedCells = [];
 setKnightPosition(board[0][0]);
 let lastPosition = { x: 0, y: 0 };
+let canChangeTarget = true;
 paintCells(possibleMovesFromPosition(lastPosition));
 knight.classList.add("knight");
 function setCoordinatesOnCells(board) {
@@ -22,13 +23,17 @@ document.addEventListener("mouseover", (event) => handleMouseOverEvent(event));
 document.addEventListener("click", (event) => handlClickEvent(event));
 function handlClickEvent(event) {
   if (event.target.classList.contains("cell")) {
+    if (!canChangeTarget) {
+      return;
+    }
     let xPosition = +event.target.getAttribute("data-x");
     let yPosition = +event.target.getAttribute("data-y");
-    // let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
-    // moves = getPath(lastPosition, { x: xPosition, y: yPosition });
-    let moves = getBFSpath(lastPosition, { x: xPosition, y: yPosition });
+    let moves = findClosestPath(lastPosition, { x: xPosition, y: yPosition });
+    // let moves = getPath(lastPosition, { x: xPosition, y: yPosition });
+    // let moves = getBFSpath(lastPosition, { x: xPosition, y: yPosition });
     displayMoves(moves);
     lastPosition = { x: xPosition, y: yPosition };
+    canChangeTarget = false;
   }
 }
 function handleMouseOverEvent(event) {
@@ -72,6 +77,9 @@ function displayMoves(moves) {
   for (let i = 0; i < moves.length; i++) {
     setTimeout(() => {
       board[moves[i].y][moves[i].x].append(knight);
+      if (i == moves.length - 1) {
+        canChangeTarget = true;
+      }
     }, i * 200);
   }
 }
